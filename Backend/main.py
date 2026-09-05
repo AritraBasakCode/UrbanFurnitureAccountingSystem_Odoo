@@ -59,6 +59,28 @@ def me(current_user: models.User = Depends(get_current_user)):
     return current_user
 
 
+def require_admin(current_user: models.User = Depends(get_current_user)):
+    if current_user.role != models.UserRole.ADMIN:
+        error("Administrator access is required", status.HTTP_403_FORBIDDEN)
+    return current_user
+
+
+@app.get("/users", response_model=List[schemas.UserOut], tags=["Users"])
+def list_users(db: Session = Depends(get_db), current_user: models.User = Depends(require_admin)):
+    return db.query(models.User).order_by(models.User.id).all()
+
+
+@app.post("/users", response_model=schemas.UserOut, status_code=status.HTTP_201_CREATED, tags=["Users"])
+def create_user(payload: schemas.UserCreate, db: Session = Depends(get_db), current_user: models.User = Depends(require_admin)):
+    if db.query(models.User).filter(models.User.email == payload.email).first():
+        error("A user with this email already exists", status.HTTP_400_BAD_REQUEST)
+    user = models.User(name=payload.name, email=payload.email, password_hash=hash_password(payload.password), role=payload.role)
+    db.add(user)
+    db.commit()
+    db.refresh(user)
+    return user
+
+
 # =========================================================
 # CONTACTS
 # =========================================================

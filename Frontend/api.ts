@@ -5,6 +5,10 @@ export type User = { id: number; name: string; email: string; role: string };
 export type Contact = { id: number; name: string; type: 'CUSTOMER' | 'VENDOR' | 'BOTH'; email?: string | null; mobile?: string | null };
 export type Product = { id: number; name: string; type: 'GOODS' | 'SERVICE' | 'COMBO'; sales_price: number; purchase_price: number; category_id?: number | null };
 export type StockRow = { product_id: number; current_stock: number };
+export type Sale = { id: number; customer_id: number; product_id: number; quantity: number; unit_price: number; tax: number; total: number; date: string; status: string };
+export type Purchase = { id: number; vendor_id: number; product_id: number; quantity: number; unit_price: number; tax: number; total: number; date: string; status: string };
+export type Payment = { id: number; contact_id: number; reference_id: number | null; type: 'RECEIVE' | 'PAY'; method: 'CASH' | 'BANK'; amount: number; date: string };
+export type UserCreate = { name: string; email: string; password: string; role: 'ADMIN' | 'ACCOUNTANT' | 'CONTACT' };
 
 export class ApiError extends Error {}
 
@@ -41,4 +45,15 @@ export const api = {
   createProduct: (payload: Omit<Product, 'id'>) => request<Product>('/products', { method: 'POST', body: JSON.stringify(payload) }),
   updateProduct: (id: number, payload: Omit<Product, 'id'>) => request<Product>(`/products/${id}`, { method: 'PUT', body: JSON.stringify(payload) }),
   deleteProduct: (id: number) => request<void>(`/products/${id}`, { method: 'DELETE' }),
+  users: () => request<User[]>('/users'),
+  createUser: (payload: UserCreate) => request<User>('/users', { method: 'POST', body: JSON.stringify(payload) }),
+  sales: () => request<Sale[]>('/sales'),
+  createSale: (payload: { customer_id: number; product_id: number; quantity: number; unit_price?: number; tax_percent?: number }) => request<Sale>('/sales', { method: 'POST', body: JSON.stringify(payload) }),
+  purchases: () => request<Purchase[]>('/purchases'),
+  createPurchase: (payload: { vendor_id: number; product_id: number; quantity: number; unit_price?: number; tax_percent?: number }) => request<Purchase>('/purchases', { method: 'POST', body: JSON.stringify(payload) }),
+  payments: () => request<Payment[]>('/payments'),
+  createPayment: (payload: { contact_id: number; reference_id?: number; type: Payment['type']; method: Payment['method']; amount: number }) => request<Payment>('/payments', { method: 'POST', body: JSON.stringify(payload) }),
+  profitLoss: () => request<Record<string, unknown>>('/reports/profit-loss'),
+  balanceSheet: () => request<Record<string, unknown>>('/reports/balance-sheet'),
+  trialBalance: () => request<Record<string, unknown>>('/reports/trial-balance'),
 };

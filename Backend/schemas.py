@@ -28,6 +28,13 @@ class UserOut(BaseModel):
     role: UserRole
 
 
+class UserCreate(BaseModel):
+    name: str
+    email: EmailStr
+    password: str
+    role: UserRole
+
+
 # ---------- Contact ----------
 
 class ContactBase(BaseModel):
