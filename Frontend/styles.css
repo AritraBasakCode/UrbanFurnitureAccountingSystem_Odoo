@@ -4,7 +4,10 @@
     font-family: 'DM Sans', sans-serif;
     color: #25262d;
     background: #f6f6f8;
-    font-synthesis: none
+    font-synthesis: none;
+    --primary: #802d80;
+    --secondary: #c1a79d;
+    --accent: #b9b092
 }
 
 * {
@@ -56,8 +59,8 @@ button {
     height: 30px;
     width: 30px;
     border-radius: 9px;
-    background: #f2af68;
-    color: #1e1b1e;
+    background: var(--secondary);
+    color: var(--primary);
     display: grid;
     place-items: center;
     font-family: Fraunces, serif;
@@ -85,7 +88,7 @@ button {
     width: 7px;
     height: 7px;
     border-radius: 99px;
-    background: #8f8bd8
+    background: var(--accent)
 }
 
 nav {
@@ -130,7 +133,7 @@ nav {
 }
 
 .subnav button.selected {
-    color: #f1b36f
+    color: var(--secondary)
 }
 
 .sidebar-bottom {
@@ -160,7 +163,7 @@ nav {
     position: absolute;
     right: 10px;
     top: 20px;
-    color: #f3b16c
+    color: var(--secondary)
 }
 
 .profile {
@@ -190,8 +193,8 @@ nav {
 }
 
 .avatar {
-    background: #dad2c9;
-    color: #4a403c;
+    background: var(--secondary);
+    color: var(--primary);
     height: 31px;
     width: 31px
 }
@@ -288,7 +291,7 @@ nav {
 }
 
 .page h1 span {
-    color: #efad65
+    color: var(--secondary)
 }
 
 .page p {
@@ -302,7 +305,7 @@ nav {
     justify-content: center;
     align-items: center;
     gap: 8px;
-    background: #292d58;
+    background: var(--primary);
     color: #fff;
     border-radius: 8px;
     padding: 13px 17px;
@@ -312,7 +315,7 @@ nav {
 }
 
 .primary:hover {
-    background: #424779
+    background: var(--primary)
 }
 
 .compact {
@@ -395,7 +398,7 @@ nav {
 }
 
 .income {
-    background: #6e72dd
+    background: var(--primary)
 }
 
 .expense {
@@ -581,8 +584,8 @@ nav {
 .initial {
     height: 27px;
     width: 27px;
-    background: #ede9e4;
-    color: #6e5c51;
+    background: var(--accent);
+    color: var(--primary);
     font-size: 9px
 }
 
@@ -615,7 +618,7 @@ nav {
 }
 
 .row-actions button:hover {
-    color: #34345a
+    color: var(--primary)
 }
 
 .modal-backdrop {
@@ -665,7 +668,7 @@ nav {
     border: 1px solid #dddde4;
     border-radius: 7px;
     padding: 11px;
-    outline-color: #797ac8;
+    outline-color: var(--primary);
     color: #303039
 }
 
@@ -723,7 +726,7 @@ nav {
 
 .register-art h1 em {
     font-family: Fraunces, serif;
-    color: #f0b36d;
+    color: var(--secondary);
     font-weight: 600
 }
 
@@ -734,7 +737,7 @@ nav {
 }
 
 .register-art .eyebrow {
-    color: #eeb06b
+    color: var(--secondary)
 }
 
 .art-card {
@@ -864,7 +867,7 @@ nav {
     border: 2px solid #7475be;
     background: #f5f5ff;
     padding: 12px;
-    color: #34345a
+    color: var(--primary)
 }
 
 .signin {
@@ -1005,34 +1008,144 @@ nav {
     background: #fafafd
 }
 
-.workflow-step > svg { color: #676bc4 }
-.workflow-step b, .workflow-step span { display: block }
-.workflow-step b { font-size: 13px }
-.workflow-step span { color: #777780; font-size: 11px; margin-top: 3px }
-.workflow-step button { margin-left: auto; color: #343866; background: transparent; font-size: 11px; font-weight: 700 }
-.workflow-arrow { align-self: center; color: #a9a9b2; flex: 0 0 auto }
-.admin-step { background: #f4f3ff }
-.accountant-step { background: #fff8ed }
-.master-step { background: #eef8ff }
-.workflow-modules { grid-template-columns: repeat(4, 1fr) }
+.workflow-step>svg {
+    color: var(--primary)
+}
 
-.transaction-row { grid-template-columns: 1fr 1.35fr 1.2fr .9fr 1.05fr 1fr }
-.transaction-row small { display: block; color: #9999a3; margin-top: 4px; font-size: 10px }
-.due { color: #ae5d3d }
-.paid, .posted { color: #398766 }
-.role-pill { color: #55598d; font-size: 11px }
-.reference-note { padding: 10px; margin: 0 !important; background: #f4f3ff; border-radius: 7px; color: #565986 !important }
+.workflow-step b,
+.workflow-step span {
+    display: block
+}
 
-.report-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px }
-.report-card { background: #fff; border: 1px solid #e8e8ec; border-radius: 11px; padding: 20px }
-.report-card h2 { margin: 15px 0 12px; text-transform: capitalize; font-size: 17px }
-.report-card p { display: flex; justify-content: space-between; gap: 15px; border-top: 1px solid #f0f0f3; padding-top: 10px; font-size: 12px }
-.report-card p span { text-transform: capitalize; color: #7c7c84 }
-.report-card p b { color: #30303a }
-.report-card small { display: block; margin-top: 17px; color: #4a906f; font-size: 11px }
+.workflow-step b {
+    font-size: 13px
+}
+
+.workflow-step span {
+    color: #777780;
+    font-size: 11px;
+    margin-top: 3px
+}
+
+.workflow-step button {
+    margin-left: auto;
+    color: #343866;
+    background: transparent;
+    font-size: 11px;
+    font-weight: 700
+}
+
+.workflow-arrow {
+    align-self: center;
+    color: #a9a9b2;
+    flex: 0 0 auto
+}
+
+.admin-step {
+    background: #f4f3ff
+}
+
+.accountant-step {
+    background: #fff8ed
+}
+
+.master-step {
+    background: #eef8ff
+}
+
+.workflow-modules {
+    grid-template-columns: repeat(4, 1fr)
+}
+
+.transaction-row {
+    grid-template-columns: 1fr 1.35fr 1.2fr .9fr 1.05fr 1fr
+}
+
+.transaction-row small {
+    display: block;
+    color: #9999a3;
+    margin-top: 4px;
+    font-size: 10px
+}
+
+.due {
+    color: #ae5d3d
+}
+
+.paid,
+.posted {
+    color: #398766
+}
+
+.role-pill {
+    color: var(--primary);
+    font-size: 11px
+}
+
+.reference-note {
+    padding: 10px;
+    margin: 0 !important;
+    background: #f4f3ff;
+    border-radius: 7px;
+    color: var(--primary) !important
+}
+
+.report-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px
+}
+
+.report-card {
+    background: #fff;
+    border: 1px solid #e8e8ec;
+    border-radius: 11px;
+    padding: 20px
+}
+
+.report-card h2 {
+    margin: 15px 0 12px;
+    text-transform: capitalize;
+    font-size: 17px
+}
+
+.report-card p {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    border-top: 1px solid #f0f0f3;
+    padding-top: 10px;
+    font-size: 12px
+}
+
+.report-card p span {
+    text-transform: capitalize;
+    color: #7c7c84
+}
+
+.report-card p b {
+    color: #30303a
+}
+
+.report-card small {
+    display: block;
+    margin-top: 17px;
+    color: #4a906f;
+    font-size: 11px
+}
 
 @media (max-width: 900px) {
-    .workflow { flex-direction: column }
-    .workflow-arrow { transform: rotate(90deg); align-self: center }
-    .workflow-modules, .report-grid { grid-template-columns: repeat(2, 1fr) }
+    .workflow {
+        flex-direction: column
+    }
+
+    .workflow-arrow {
+        transform: rotate(90deg);
+        align-self: center
+    }
+
+    .workflow-modules,
+    .report-grid {
+        grid-template-columns: repeat(2, 1fr)
+    }
 }
