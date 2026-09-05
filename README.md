@@ -1,4 +1,4 @@
-# Urban Furniture Accounting System
+# Pebble - Urban Furniture Accounting System
 
 A full-stack accounting application for a furniture business. It provides master-data management, sales and purchase transactions, payments, stock visibility, double-entry journal posting, and financial reports.
 

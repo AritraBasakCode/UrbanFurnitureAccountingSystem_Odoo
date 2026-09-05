@@ -1,4 +1,4 @@
-# Urban Furniture Frontend
+# Pebble (Urban Furniture) - Frontend
 
 The web interface for the Urban Furniture Accounting System. It is a React 19, TypeScript, and Vite single-page application.
 

@@ -1,4 +1,4 @@
-# Urban Furniture Accounting System — Backend
+# Pebble (Urban Furniture) - Backend
 
 A simple FastAPI + SQLAlchemy + SQLite accounting backend built for a 24-hour hackathon.
 Modular monolith — no microservices, no message queues, no extra layers.
