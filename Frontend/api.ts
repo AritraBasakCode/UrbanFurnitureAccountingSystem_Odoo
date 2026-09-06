@@ -8,6 +8,8 @@ export type StockRow = { product_id: number; current_stock: number };
 export type Sale = { id: number; customer_id: number; product_id: number; quantity: number; unit_price: number; tax: number; total: number; date: string; status: string };
 export type Purchase = { id: number; vendor_id: number; product_id: number; quantity: number; unit_price: number; tax: number; total: number; date: string; status: string };
 export type Payment = { id: number; contact_id: number; reference_id: number | null; type: 'RECEIVE' | 'PAY'; method: 'CASH' | 'BANK'; amount: number; date: string };
+export type Account = { id: number; code: string; name: string; type: 'ASSET' | 'LIABILITY' | 'INCOME' | 'EXPENSE' | 'CAPITAL' };
+export type TrialBalanceRow = { account: string; code: string; type: Account['type']; debit: number; credit: number };
 export type UserCreate = { name: string; email: string; password: string; role: 'ADMIN' | 'ACCOUNTANT' | 'CONTACT' };
 
 export class ApiError extends Error {}
@@ -54,6 +56,7 @@ export const api = {
   createPurchase: (payload: { vendor_id: number; product_id: number; quantity: number; unit_price?: number; tax_percent?: number }) => request<Purchase>('/purchases', { method: 'POST', body: JSON.stringify(payload) }),
   deletePurchase: (id: number) => request<void>(`/purchases/${id}`, { method: 'DELETE' }),
   payments: () => request<Payment[]>('/payments'),
+  accounts: () => request<Account[]>('/accounts'),
   createPayment: (payload: { contact_id: number; reference_id?: number; type: Payment['type']; method: Payment['method']; amount: number }) => request<Payment>('/payments', { method: 'POST', body: JSON.stringify(payload) }),
   profitLoss: () => request<Record<string, unknown>>('/reports/profit-loss'),
   balanceSheet: () => request<Record<string, unknown>>('/reports/balance-sheet'),
