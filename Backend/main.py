@@ -338,6 +338,38 @@ def create_sale(payload: schemas.SaleCreate, db: Session = Depends(get_db), curr
         error(f"Failed to create sale: {str(e)}", status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+@app.delete("/sales/{sale_id}", status_code=status.HTTP_204_NO_CONTENT, tags=["Sales"])
+def delete_sale(sale_id: int, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+    """Remove an unpaid sale and every system record created for it."""
+    sale = db.query(models.Sale).filter(models.Sale.id == sale_id).first()
+    if not sale:
+        error("Sale not found", status.HTTP_404_NOT_FOUND)
+
+    payment = db.query(models.Payment).filter(
+        models.Payment.reference_id == sale.id,
+        models.Payment.type == models.PaymentType.RECEIVE,
+        models.Payment.contact_id == sale.customer_id,
+    ).first()
+    if payment:
+        error("Cannot delete a sale with recorded payments", status.HTTP_400_BAD_REQUEST)
+
+    try:
+        entries = db.query(models.JournalEntry).filter(
+            models.JournalEntry.reference == f"SALE-{sale.id}"
+        ).all()
+        for entry in entries:
+            db.delete(entry)  # JournalItem rows are removed by the model cascade.
+        db.query(models.StockMovement).filter(
+            models.StockMovement.reference_id == sale.id,
+            models.StockMovement.type == models.StockMovementType.SALE_OUT,
+        ).delete(synchronize_session=False)
+        db.delete(sale)
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        error(f"Failed to delete sale: {str(e)}", status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 # =========================================================
 # PURCHASES
 # =========================================================
@@ -413,6 +445,38 @@ def create_purchase(payload: schemas.PurchaseCreate, db: Session = Depends(get_d
     except Exception as e:
         db.rollback()
         error(f"Failed to create purchase: {str(e)}", status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@app.delete("/purchases/{purchase_id}", status_code=status.HTTP_204_NO_CONTENT, tags=["Purchases"])
+def delete_purchase(purchase_id: int, db: Session = Depends(get_db), current_user: models.User = Depends(get_current_user)):
+    """Remove an unpaid purchase and every system record created for it."""
+    purchase = db.query(models.Purchase).filter(models.Purchase.id == purchase_id).first()
+    if not purchase:
+        error("Purchase not found", status.HTTP_404_NOT_FOUND)
+
+    payment = db.query(models.Payment).filter(
+        models.Payment.reference_id == purchase.id,
+        models.Payment.type == models.PaymentType.PAY,
+        models.Payment.contact_id == purchase.vendor_id,
+    ).first()
+    if payment:
+        error("Cannot delete a purchase with recorded payments", status.HTTP_400_BAD_REQUEST)
+
+    try:
+        entries = db.query(models.JournalEntry).filter(
+            models.JournalEntry.reference == f"PURCHASE-{purchase.id}"
+        ).all()
+        for entry in entries:
+            db.delete(entry)  # JournalItem rows are removed by the model cascade.
+        db.query(models.StockMovement).filter(
+            models.StockMovement.reference_id == purchase.id,
+            models.StockMovement.type == models.StockMovementType.PURCHASE_IN,
+        ).delete(synchronize_session=False)
+        db.delete(purchase)
+        db.commit()
+    except Exception as e:
+        db.rollback()
+        error(f"Failed to delete purchase: {str(e)}", status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 # =========================================================
